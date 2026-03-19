@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>HardwareHub ERP</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F1F5F9;
+  --white:#FFFFFF;
+  --border:#E2E8F0;
+  --border2:#CBD5E1;
+  --text:#1E293B;
+  --text2:#64748B;
+  --text3:#94A3B8;
+  --primary:#2563EB;
+  --primary-light:#EFF6FF;
+  --primary-border:#BFDBFE;
+  --green:#059669;
+  --green-light:#F0FDF4;
+  --green-border:#BBF7D0;
+  --red:#DC2626;
+  --red-light:#FEF2F2;
+  --red-border:#FECACA;
+  --amber:#D97706;
+  --amber-light:#FFFBEB;
+  --amber-border:#FDE68A;
+  --purple:#7C3AED;
+  --purple-light:#F5F3FF;
+  --sidebar-w:224px;
+  --r:8px;
+  --shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 6px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.04);
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:14px;display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:0}
+.logo{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-icon{width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px;flex-shrink:0}
+.logo-text{font-weight:600;font-size:15px;color:var(--text)}
+.logo-text span{color:var(--primary)}
+.logo-sub{font-size:11px;color:var(--text3)}
+
+.role-chip{margin:12px 12px 8px;background:var(--primary-light);border:1px solid var(--primary-border);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:background 0.15s}
+.role-chip:hover{background:#DBEAFE}
+.role-chip-top{display:flex;align-items:center;justify-content:space-between}
+.role-chip-label{font-size:11px;color:var(--primary);font-weight:500;text-transform:uppercase;letter-spacing:0.4px}
+.role-chip-switch{font-size:11px;color:var(--primary);opacity:0.7}
+.role-chip-name{font-size:14px;font-weight:600;color:var(--primary);margin-top:2px}
+
+nav{flex:1;padding:8px 8px}
+.nav-group-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:8px 8px 4px;margin-top:4px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:6px;cursor:pointer;color:var(--text2);font-size:13.5px;font-weight:400;transition:all 0.12s;margin-bottom:1px;position:relative}
+.nav-item:hover{background:#F8FAFC;color:var(--text)}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:500}
+.nav-item svg{flex-shrink:0;opacity:0.7}
+.nav-item.active svg{opacity:1}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:600;border-radius:10px;padding:1px 6px;min-width:18px;text-align:center}
+
+.sidebar-user{padding:12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.user-av{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.user-av.green{background:var(--green)}
+.user-av.amber{background:var(--amber)}
+.user-av.purple{background:var(--purple)}
+.user-info-name{font-size:13px;font-weight:500;color:var(--text)}
+.user-info-role{font-size:11px;color:var(--text3)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{padding:0 20px;height:56px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-left h1{font-size:16px;font-weight:600;color:var(--text)}
+.topbar-left p{font-size:12px;color:var(--text3);margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.btn{padding:7px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid transparent;font-family:'Inter',sans-serif;transition:all 0.12s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-outline{background:var(--white);color:var(--text2);border-color:var(--border)}
+.btn-outline:hover{border-color:var(--border2);color:var(--text)}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-primary:hover{background:#1D4ED8}
+.btn-danger{background:var(--white);color:var(--red);border-color:var(--red-border)}
+.btn-danger:hover{background:var(--red-light)}
+.btn-success{background:var(--green);color:#fff;border-color:var(--green)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.notif-btn{width:34px;height:34px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:background 0.12s}
+.notif-btn:hover{background:var(--bg)}
+.notif-dot{position:absolute;top:8px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--red);border:1.5px solid var(--white)}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:20px}
+.content::-webkit-scrollbar{width:5px}
+.content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}
+.card-body{padding:16px}
+.card-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:14px;font-weight:600;color:var(--text)}
+.card-sub{font-size:12px;color:var(--text3)}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.stat-label{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:8px}
+.stat-value{font-size:24px;font-weight:600;color:var(--text);line-height:1.1}
+.stat-delta{font-size:12px;margin-top:6px;display:flex;align-items:center;gap:4px}
+.delta-up{color:var(--green)}
+.delta-down{color:var(--red)}
+.delta-flat{color:var(--text3)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{padding:10px 12px;text-align:left;font-size:12px;font-weight:500;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;background:#FAFAFA}
+tbody td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#FAFAFE}
+.td-primary{font-weight:500;color:var(--text)}
+.td-mono{font-size:12px;font-family:ui-monospace,monospace}
+
+/* PILLS */
+.pill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.pill-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border)}
+.pill-red{background:var(--red-light);color:var(--red);border:1px solid var(--red-border)}
+.pill-amber{background:var(--amber-light);color:var(--amber);border:1px solid var(--amber-border)}
+.pill-blue{background:var(--primary-light);color:var(--primary);border:1px solid var(--primary-border)}
+.pill-purple{background:var(--purple-light);color:var(--purple);border:1px solid #DDD6FE}
+.pill-gray{background:#F8FAFC;color:var(--text2);border:1px solid var(--border)}
+
+/* FILTERS BAR */
+.filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filter-input{padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);outline:none;transition:border-color 0.12s}
+.filter-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+.filter-input::placeholder{color:var(--text3)}
+.filter-select{padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);outline:none;cursor:pointer;transition:border-color 0.12s}
+.filter-select:focus{border-color:var(--primary)}
+.filter-count{font-size:12px;color:var(--text3);margin-left:auto}
+
+/* GRID LAYOUTS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.grid-left-wide{display:grid;grid-template-columns:1.7fr 1fr;gap:14px;margin-bottom:14px}
+.grid-right-wide{display:grid;grid-template-columns:1fr 1.5fr;gap:14px;margin-bottom:14px}
+
+/* CHART */
+.chart-area{padding:4px 0 8px}
+canvas{display:block}
+
+/* PROGRESS BARS */
+.prog-item{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.prog-label{font-size:13px;color:var(--text);min-width:110px}
+.prog-track{flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px}
+.prog-val{font-size:12px;color:var(--text2);min-width:36px;text-align:right}
+
+/* POS */
+.pos-layout{display:grid;grid-template-columns:1fr 320px;gap:16px;height:calc(100vh - 116px)}
+.pos-left{display:flex;flex-direction:column;overflow:hidden}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;overflow-y:auto;flex:1;padding-right:2px}
+.products-grid::-webkit-scrollbar{width:4px}
+.products-grid::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.prod-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;transition:all 0.12s;text-align:center;box-shadow:var(--shadow)}
+.prod-card:hover{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+.prod-card:active{transform:scale(0.97)}
+.prod-icon{font-size:24px;margin-bottom:8px;display:block}
+.prod-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.prod-price{font-size:13px;font-weight:600;color:var(--primary)}
+.prod-stock{font-size:11px;color:var(--text3);margin-top:2px}
+.prod-card.out-of-stock{opacity:0.5;pointer-events:none}
+
+.cart-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+.cart-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cart-items-wrap{flex:1;overflow-y:auto;padding:8px 0}
+.cart-items-wrap::-webkit-scrollbar{width:4px}
+.cart-item-row{display:flex;align-items:center;gap:10px;padding:8px 16px;transition:background 0.1s}
+.cart-item-row:hover{background:var(--bg)}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-item-sub{font-size:12px;color:var(--text3)}
+.qty-ctrl{display:flex;align-items:center;gap:6px}
+.qty-btn{width:22px;height:22px;border-radius:4px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.1s;color:var(--text2);line-height:1}
+.qty-btn:hover{background:var(--bg);border-color:var(--border2)}
+.qty-val{font-size:13px;font-weight:500;color:var(--text);min-width:18px;text-align:center}
+.item-total{font-size:13px;font-weight:500;color:var(--text);min-width:60px;text-align:right}
+.remove-btn{color:var(--text3);cursor:pointer;font-size:16px;line-height:1;padding:0 2px;border:none;background:none;transition:color 0.1s}
+.remove-btn:hover{color:var(--red)}
+
+.cart-footer{border-top:1px solid var(--border);padding:14px 16px}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.total-label{font-size:13px;color:var(--text2)}
+.total-val{font-size:13px;font-weight:500;color:var(--text)}
+.grand-total-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0 12px;border-top:1px solid var(--border);margin-top:6px}
+.grand-label{font-size:15px;font-weight:600;color:var(--text)}
+.grand-val{font-size:17px;font-weight:700;color:var(--primary)}
+.checkout-btn{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.12s}
+.checkout-btn:hover{background:#1D4ED8}
+.checkout-btn:active{transform:scale(0.98)}
+.checkout-btn:disabled{background:var(--border2);cursor:not-allowed;transform:none}
+.clear-btn{width:100%;padding:7px;background:none;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;margin-top:6px;transition:all 0.12s}
+.clear-btn:hover{border-color:var(--border2);color:var(--text)}
+
+/* FORM */
+.form-group{margin-bottom:14px}
+.form-label{font-size:13px;font-weight:500;color:var(--text);display:block;margin-bottom:5px}
+.form-input{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color 0.12s}
+.form-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+.form-select{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;background:var(--white);cursor:pointer}
+.form-select:focus{border-color:var(--primary)}
+.form-textarea{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:80px}
+.form-textarea:focus{border-color:var(--primary)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-help{font-size:11px;color:var(--text3);margin-top:3px}
+
+/* ALERT ITEM */
+.alert-row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:var(--r);border:1px solid var(--border);background:var(--white);margin-bottom:8px;box-shadow:var(--shadow)}
+.alert-row.critical{background:var(--red-light);border-color:var(--red-border)}
+.alert-row.warn{background:var(--amber-light);border-color:var(--amber-border)}
+.alert-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.alert-icon.red{background:var(--red-border)}
+.alert-icon.amber{background:var(--amber-border)}
+.alert-body{flex:1;min-width:0}
+.alert-title{font-size:13px;font-weight:500;color:var(--text)}
+.alert-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.alert-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
+
+/* ACTIVITY / FEED */
+.feed-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.feed-item:last-child{border-bottom:none}
+.feed-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.feed-body{flex:1;min-width:0}
+.feed-title{font-size:13px;font-weight:500;color:var(--text)}
+.feed-sub{font-size:12px;color:var(--text3);margin-top:1px}
+.feed-right{text-align:right;flex-shrink:0}
+.feed-amount{font-size:13px;font-weight:600;color:var(--text)}
+.feed-time{font-size:11px;color:var(--text3)}
+
+/* USER CARDS */
+.user-card{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.user-card:last-child{border-bottom:none}
+.user-av-lg{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff;flex-shrink:0}
+.user-card-info{flex:1;min-width:0}
+.user-card-name{font-size:13px;font-weight:500;color:var(--text)}
+.user-card-meta{font-size:12px;color:var(--text3);margin-top:1px}
+.user-card-actions{display:flex;gap:6px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.4);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(2px)}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--white);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-md);width:360px;max-height:90vh;overflow-y:auto}
+.modal-header{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-size:15px;font-weight:600;color:var(--text)}
+.modal-close{width:28px;height:28px;border-radius:6px;border:none;background:none;cursor:pointer;color:var(--text3);font-size:18px;display:flex;align-items:center;justify-content:center;transition:background 0.1s}
+.modal-close:hover{background:var(--bg);color:var(--text)}
+.modal-body{padding:16px 18px}
+.role-option{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:var(--r);border:1.5px solid var(--border);cursor:pointer;margin-bottom:8px;transition:all 0.12s}
+.role-option:hover{border-color:var(--primary);background:var(--primary-light)}
+.role-option.selected{border-color:var(--primary);background:var(--primary-light)}
+.role-opt-av{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.role-opt-name{font-size:14px;font-weight:500;color:var(--text)}
+.role-opt-sub{font-size:12px;color:var(--text3)}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:48px 20px;color:var(--text3)}
+.empty-icon{font-size:36px;margin-bottom:10px}
+.empty-title{font-size:15px;font-weight:500;color:var(--text2);margin-bottom:4px}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;padding:10px 16px;background:var(--text);color:#fff;border-radius:8px;font-size:13px;font-weight:500;z-index:9999;display:none;box-shadow:var(--shadow-md)}
+.toast.show{display:block;animation:fadeUp 0.25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:14px 0}
+
+/* SECTION HEAD */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font-size:14px;font-weight:600;color:var(--text)}
+
+/* COLOR DOT */
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-green{background:var(--green)}
+.dot-red{background:var(--red)}
+.dot-amber{background:var(--amber)}
+.dot-gray{background:var(--text3)}
+.dot-blue{background:var(--primary)}
+
+/* MINI BARS (chart) */
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:100px;padding-top:8px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height 0.4s ease;background:var(--primary);opacity:0.85}
+.bar-label{font-size:10px;color:var(--text3)}
+.bar-val{font-size:10px;color:var(--text2);font-weight:500}
+
+/* SETTINGS */
+.settings-section{margin-bottom:20px}
+.settings-section-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.settings-row:last-child{border-bottom:none}
+.settings-row-label{font-size:13px;font-weight:500;color:var(--text)}
+.settings-row-sub{font-size:12px;color:var(--text3);margin-top:1px}
+.toggle{width:36px;height:20px;border-radius:10px;background:var(--primary);border:none;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0}
+.toggle::after{content:'';position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:right 0.2s}
+.toggle.off{background:var(--border2)}
+.toggle.off::after{right:auto;left:3px}
+
+/* RESPONSIVE PADDING */
+.mb-14{margin-bottom:14px}
+.mb-18{margin-bottom:18px}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">HH</div>
+    <div>
+      <div class="logo-text">Hardware<span>Hub</span></div>
+      <div class="logo-sub">ERP System</div>
+    </div>
+  </div>
+
+  <div class="role-chip" onclick="openModal()">
+    <div class="role-chip-top">
+      <span class="role-chip-label">Current Role</span>
+      <span class="role-chip-switch">Switch ↗</span>
+    </div>
+    <div class="role-chip-name" id="chip-role-name">Owner</div>
+  </div>
+
+  <nav id="sidebar-nav"></nav>
+
+  <div class="sidebar-user">
+    <div class="user-av" id="user-av">SL</div>
+    <div>
+      <div class="user-info-name" id="user-name">Saman Lanka</div>
+      <div class="user-info-role" id="user-role-label">Owner · Since 2021</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 id="page-title">Overview</h1>
+      <p id="page-subtitle">Thursday, 19 March 2026</p>
+    </div>
+    <div class="topbar-right">
+      <button class="notif-btn" title="Notifications">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="notif-dot"></div>
+      </button>
+      <button class="btn btn-outline" id="secondary-action" onclick="showToast('Exporting...')">Export</button>
+      <button class="btn btn-primary" id="primary-action">+ New Sale</button>
+    </div>
+  </header>
+  <div class="content" id="content"></div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Switch Role</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────────
+const ROLES = [
+  {id:'owner',name:'Owner',label:'Full system access',av:'SL',user:'Saman Lanka',avClass:'',since:'Since 2021',emoji:'👑',color:'#2563EB'},
+  {id:'admin',name:'Admin',label:'Inventory Manager',av:'PN',user:'Priya Nair',avClass:'green',since:'Since 2023',emoji:'🛠',color:'#059669'},
+  {id:'supervisor',name:'Supervisor',label:'Operations Supervisor',av:'RJ',user:'Ravi Jayasinghe',avClass:'amber',since:'Since 2022',emoji:'📋',color:'#D97706'},
+  {id:'cashier',name:'Cashier',label:'Sales Cashier',av:'AW',user:'Amali Wijeratne',avClass:'purple',since:'Since 2024',emoji:'🏷',color:'#7C3AED'},
+];
+
+const PRODUCTS = [
+  {id:1,icon:'🔧',name:'Claw Hammer 500g',sku:'HW-0056',cat:'Hardware',price:890,stock:35,min:20},
+  {id:2,icon:'💧',name:'PVC Pipe 2" (1m)',sku:'PLM-0012',cat:'Plumbing',price:450,stock:142,min:50},
+  {id:3,icon:'⚡',name:'MCB Switch 16A',sku:'ELE-0023',cat:'Electrical',price:1200,stock:88,min:30},
+  {id:4,icon:'🎨',name:'Paint Brush 3"',sku:'PT-0088',cat:'Paint',price:320,stock:47,min:25},
+  {id:5,icon:'🔩',name:'Hex Bolt Set M8',sku:'HW-0201',cat:'Hardware',price:150,stock:210,min:80},
+  {id:6,icon:'🔌',name:'Wire Nuts Asst.',sku:'ELE-0088',cat:'Electrical',price:180,stock:7,min:25},
+  {id:7,icon:'🪚',name:'Hacksaw 300mm',sku:'HW-0099',cat:'Hardware',price:1450,stock:18,min:15},
+  {id:8,icon:'💡',name:'LED Bulb 9W',sku:'ELE-0045',cat:'Electrical',price:580,stock:95,min:40},
+  {id:9,icon:'🖌️',name:'Emulsion White 5L',sku:'PT-0034',cat:'Paint',price:3200,stock:62,min:20},
+  {id:10,icon:'🔨',name:'Masonry Drill 10mm',sku:'HW-0310',cat:'Hardware',price:270,stock:0,min:15},
+  {id:11,icon:'🧪',name:'PVC Cement 500ml',sku:'PLM-0041',cat:'Plumbing',price:460,stock:4,min:20},
+  {id:12,icon:'🔋',name:'Copper Cable 2.5mm',sku:'ELE-0112',cat:'Electrical',price:820,stock:130,min:50},
+];
+
+const TRANSACTIONS = [
+  {inv:'INV-0841',cashier:'Amali W.',items:6,time:'09:32',date:'2026-03-19',amount:4250,status:'Paid',method:'Cash'},
+  {inv:'INV-0840',cashier:'Kasun P.',items:2,time:'09:18',date:'2026-03-19',amount:890,status:'Paid',method:'Card'},
+  {inv:'INV-0839',cashier:'Amali W.',items:11,time:'08:55',date:'2026-03-19',amount:7120,status:'Paid',method:'Cash'},
+  {inv:'INV-0838',cashier:'Nimal R.',items:3,time:'08:42',date:'2026-03-19',amount:1340,status:'Void',method:'Cash'},
+  {inv:'INV-0837',cashier:'Kasun P.',items:5,time:'08:30',date:'2026-03-19',amount:2680,status:'Paid',method:'Card'},
+  {inv:'INV-0836',cashier:'Amali W.',items:1,time:'08:10',date:'2026-03-19',amount:450,status:'Paid',method:'Cash'},
+  {inv:'INV-0835',cashier:'Nimal R.',items:4,time:'07:55',date:'2026-03-19',amount:3210,status:'Paid',method:'Transfer'},
+  {inv:'INV-0834',cashier:'Kasun P.',items:7,time:'17:40',date:'2026-03-18',amount:5670,status:'Paid',method:'Credit'},
+  {inv:'INV-0833',cashier:'Amali W.',items:2,time:'16:22',date:'2026-03-18',amount:1600,status:'Refund',method:'Cash'},
+  {inv:'INV-0832',cashier:'Nimal R.',items:9,time:'15:11',date:'2026-03-18',amount:8900,status:'Paid',method:'Cash'},
+];
+
+const USERS = [
+  {name:'Saman Lanka',role:'Owner',email:'saman@hardwarehub.lk',phone:'+94 77 111 2233',av:'SL',avClass:'',status:'Active',since:'2021-01-01'},
+  {name:'Priya Nair',role:'Admin',email:'priya@hardwarehub.lk',phone:'+94 71 234 5678',av:'PN',avClass:'green',status:'Active',since:'2023-03-15'},
+  {name:'Kasun Perera',role:'Admin',email:'kasun.admin@hardwarehub.lk',phone:'+94 77 555 4321',av:'KP',avClass:'green',status:'Active',since:'2023-07-01'},
+  {name:'Ravi Jayasinghe',role:'Supervisor',email:'ravi@hardwarehub.lk',phone:'+94 72 900 1234',av:'RJ',avClass:'amber',status:'Active',since:'2022-06-10'},
+  {name:'Dilani Fernando',role:'Supervisor',email:'dilani@hardwarehub.lk',phone:'+94 76 345 6789',av:'DF',avClass:'amber',status:'Active',since:'2022-11-20'},
+  {name:'Sarath Mendis',role:'Supervisor',email:'sarath@hardwarehub.lk',phone:'+94 71 800 0011',av:'SM',avClass:'amber',status:'On Leave',since:'2023-01-05'},
+  {name:'Amali Wijeratne',role:'Cashier',email:'amali@hardwarehub.lk',phone:'+94 77 222 3344',av:'AW',avClass:'purple',status:'Active',since:'2024-02-01'},
+  {name:'Kasun Perera Jr.',role:'Cashier',email:'kasun.jr@hardwarehub.lk',phone:'+94 71 456 7890',av:'KP',avClass:'purple',status:'Active',since:'2024-03-15'},
+  {name:'Nimal Rajapaksa',role:'Cashier',email:'nimal@hardwarehub.lk',phone:'+94 76 789 0123',av:'NR',avClass:'purple',status:'Active',since:'2024-04-10'},
+  {name:'Tharaka Silva',role:'Cashier',email:'tharaka@hardwarehub.lk',phone:'+94 77 333 4455',av:'TS',avClass:'purple',status:'Active',since:'2024-05-20'},
+  {name:'Chamari Bandara',role:'Cashier',email:'chamari@hardwarehub.lk',phone:'+94 71 567 8901',av:'CB',avClass:'purple',status:'Inactive',since:'2024-06-01'},
+];
+
+const RETURN_REQS = [
+  {inv:'INV-0838',cashier:'Nimal R.',reason:'Customer returned wrong size pipe — PVC 2"',amount:1340,time:'08:42',status:'Pending'},
+  {inv:'INV-0829',cashier:'Amali W.',reason:'Duplicate charge — system lag during card swipe',amount:450,time:'07:30',status:'Pending'},
+  {inv:'INV-0815',cashier:'Kasun P.',reason:'Item defective — MCB tripped on install',amount:1200,time:'16:10',status:'Approved'},
+];
+
+const NAV_CFG = {
+  owner:[
+    {section:'Dashboard',items:[
+      {icon:svg_grid,label:'Overview',key:'overview',active:true},
+      {icon:svg_trend,label:'Revenue',key:'revenue'},
+      {icon:svg_chart,label:'Analytics',key:'analytics'},
+    ]},
+    {section:'Management',items:[
+      {icon:svg_users,label:'Users',key:'users'},
+      {icon:svg_box,label:'Inventory',key:'inventory'},
+      {icon:svg_receipt,label:'Transactions',key:'transactions'},
+    ]},
+    {section:'System',items:[
+      {icon:svg_cog,label:'Settings',key:'settings'},
+    ]},
+  ],
+  admin:[
+    {section:'Inventory',items:[
+      {icon:svg_box,label:'Stock Overview',key:'stock',active:true},
+      {icon:svg_plus,label:'Add Product',key:'addproduct'},
+      {icon:svg_swap,label:'Adjustments',key:'adjustments'},
+    ]},
+    {section:'Reports',items:[
+      {icon:svg_warn,label:'Low Stock',key:'lowstock',badge:3},
+      {icon:svg_doc,label:'Stock Report',key:'stockreport'},
+    ]},
+  ],
+  supervisor:[
+    {section:'Operations',items:[
+      {icon:svg_live,label:'Live Sales',key:'livesales',active:true},
+      {icon:svg_return,label:'Returns & Voids',key:'returns',badge:2},
+      {icon:svg_users,label:'Cashiers',key:'cashiers'},
+    ]},
+    {section:'Reports',items:[
+      {icon:svg_chart,label:"Today's Summary",key:'summary'},
+      {icon:svg_bell,label:'Alerts',key:'alerts',badge:3},
+    ]},
+  ],
+  cashier:[
+    {section:'Sales',items:[
+      {icon:svg_cart,label:'New Sale',key:'pos',active:true},
+      {icon:svg_receipt,label:'My Transactions',key:'mytransactions'},
+      {icon:svg_return,label:'Return Request',key:'returnrequest'},
+    ]},
+  ],
+};
+
+// SVG icons
+function svgIcon(path,extra=''){return`<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" ${extra}>${path}</svg>`}
+function svg_grid(){return svgIcon('<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>')}
+function svg_trend(){return svgIcon('<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>')}
+function svg_chart(){return svgIcon('<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>')}
+function svg_users(){return svgIcon('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>')}
+function svg_box(){return svgIcon('<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>')}
+function svg_receipt(){return svgIcon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>')}
+function svg_cog(){return svgIcon('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>')}
+function svg_plus(){return svgIcon('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>')}
+function svg_swap(){return svgIcon('<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>')}
+function svg_warn(){return svgIcon('<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>')}
+function svg_doc(){return svgIcon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>')}
+function svg_live(){return svgIcon('<circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>')}
+function svg_return(){return svgIcon('<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/>')}
+function svg_bell(){return svgIcon('<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>')}
+function svg_cart(){return svgIcon('<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>')}
+
+// ─── STATE ─────────────────────────────────────────────────────────────
+let currentRole = 'owner';
+let currentPage = 'overview';
+let cart = [];
+
+// ─── HELPERS ───────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+function fmt(n){return'₨ '+n.toLocaleString()}
+function showToast(msg,type=''){
+  const t=$('toast');t.textContent=msg;t.className='toast show';
+  if(type==='success')t.style.background='#059669';
+  else if(type==='error')t.style.background='#DC2626';
+  else t.style.background='#1E293B';
+  clearTimeout(t._tid);t._tid=setTimeout(()=>t.className='toast',2200);
+}
+function openModal(){$('modal').classList.add('show');buildModal()}
+function closeModal(){$('modal').classList.remove('show')}
+function stockStatus(p){
+  if(p.stock===0)return{label:'Out of Stock',pill:'pill-red'};
+  if(p.stock<=p.min/2)return{label:'Critical',pill:'pill-red'};
+  if(p.stock<=p.min)return{label:'Low Stock',pill:'pill-amber'};
+  return{label:'In Stock',pill:'pill-green'};
+}
+
+// ─── NAV ───────────────────────────────────────────────────────────────
+function buildNav(){
+  const cfg=NAV_CFG[currentRole];
+  const role=ROLES.find(r=>r.id===currentRole);
+  $('chip-role-name').textContent=role.name;
+  $('user-av').textContent=role.av;
+  $('user-av').className='user-av'+(role.avClass?' '+role.avClass:'');
+  $('user-name').textContent=role.user;
+  $('user-role-label').textContent=role.name+' · '+role.since;
+
+  const firstKey=cfg[0].items.find(i=>i.active||true)?.key;
+  const curKey=currentPage;
+
+  $('sidebar-nav').innerHTML=cfg.map(sec=>`
+    <div class="nav-group-label">${sec.section}</div>
+    ${sec.items.map(item=>`
+      <div class="nav-item ${item.key===curKey?'active':''}" onclick="navigate('${item.key}')">
+        ${item.icon()}
+        ${item.label}
+        ${item.badge?`<span class="nav-badge">${item.badge}</span>`:''}
+      </div>`).join('')}
+  `).join('');
+}
+
+function navigate(key){
+  currentPage=key;
+  buildNav();
+  const titles={
+    overview:'Overview',revenue:'Revenue',analytics:'Analytics',
+    users:'Users',inventory:'Inventory',transactions:'Transactions',settings:'Settings',
+    stock:'Stock Overview',addproduct:'Add Product',adjustments:'Adjustments',
+    lowstock:'Low Stock Alerts',stockreport:'Stock Report',
+    livesales:'Live Sales',returns:'Returns & Voids',cashiers:'Cashier Management',
+    summary:"Today's Summary",alerts:'Alerts',
+    pos:'New Sale',mytransactions:'My Transactions',returnrequest:'Return Request'
+  };
+  $('page-title').textContent=titles[key]||key;
+
+  const primaryLabels={overview:'+ New Sale',revenue:'Export',analytics:'Export',users:'+ Add User',
+    inventory:'+ Add Product',transactions:'Export',settings:'Save Changes',
+    stock:'+ Add Product',addproduct:'Save Product',adjustments:'+ Add Adjustment',
+    lowstock:'Reorder All',stockreport:'Export PDF',
+    livesales:'Refresh',returns:'Approve All',cashiers:'+ Add Cashier',summary:'Export',alerts:'Clear All',
+    pos:'New Sale',mytransactions:'Export',returnrequest:'Submit Request'};
+  $('primary-action').textContent=primaryLabels[key]||'Action';
+
+  SCREENS[key]?SCREENS[key]():$('content').innerHTML=`<div class="empty"><div class="empty-icon">🚧</div><div class="empty-title">Screen coming soon</div></div>`;
+}
+
+// ─── MODAL ─────────────────────────────────────────────────────────────
+function buildModal(){
+  $('modal-body').innerHTML=ROLES.map(r=>`
+    <div class="role-option ${r.id===currentRole?'selected':''}" onclick="switchRole('${r.id}')">
+      <div class="role-opt-av" style="background:${r.color}18">${r.emoji}</div>
+      <div>
+        <div class="role-opt-name">${r.name}</div>
+        <div class="role-opt-sub">${r.label}</div>
+      </div>
+      ${r.id===currentRole?`<div style="margin-left:auto"><svg width="14" height="14" fill="${r.color}" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="${r.color}" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`:''}
+    </div>`).join('');
+}
+
+function switchRole(id){
+  currentRole=id;
+  const cfg=NAV_CFG[id];
+  currentPage=cfg[0].items[0].key;
+  closeModal();
+  buildNav();
+  navigate(currentPage);
+  showToast('Switched to '+ROLES.find(r=>r.id===id).name+' view');
+}
+
+// ─── SCREENS ───────────────────────────────────────────────────────────
+const SCREENS = {};
+
+// ── OWNER: OVERVIEW ──
+SCREENS.overview = function(){
+  $('content').innerHTML=`
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Monthly Revenue</div>
+      <div class="stat-value" style="color:var(--primary)">₨ 487,200</div>
+      <div class="stat-delta delta-up">↑ 12.4% vs last month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Today's Sales</div>
+      <div class="stat-value" style="color:var(--green)">₨ 32,450</div>
+      <div class="stat-delta delta-up">↑ 8.1% vs yesterday</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Products</div>
+      <div class="stat-value">1,248</div>
+      <div class="stat-delta delta-flat">→ No change</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Low Stock Alerts</div>
+      <div class="stat-value" style="color:var(--red)">7</div>
+      <div class="stat-delta delta-down">↓ Needs reorder</div>
+    </div>
+  </div>
+
+  <div class="grid-left-wide mb-14">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Revenue — Last 12 Months</span><span class="card-sub">LKR (thousands)</span></div>
+      <div class="card-body chart-area">
+        <div class="bar-chart" id="rev-bars"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Category Sales</span><span class="card-sub">This month</span></div>
+      <div class="card-body">
+        ${[['Plumbing',38,'var(--primary)'],['Electrical',27,'var(--green)'],['Hardware',22,'var(--amber)'],['Paint',13,'var(--purple)']].map(([n,p,c])=>`
+        <div class="prog-item">
+          <div class="prog-label">${n}</div>
+          <div class="prog-track"><div class="prog-fill" style="width:${p}%;background:${c}"></div></div>
+          <div class="prog-val">${p}%</div>
+        </div>`).join('')}
+        <div class="divider"></div>
+        <div class="section-head" style="margin-bottom:10px"><span class="section-title">Top Cashiers</span><span class="card-sub">Today</span></div>
+        ${[['AW','Amali W.','₨ 14,200','18 sales','purple'],['KP','Kasun P.','₨ 11,500','14 sales','green'],['NR','Nimal R.','₨ 6,750','8 sales','amber']].map(([av,n,r,s,cls])=>`
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div class="user-av-lg" style="width:30px;height:30px;font-size:11px;background:var(--${cls})">${av}</div>
+          <div style="flex:1;font-size:13px;font-weight:500;color:var(--text)">${n}</div>
+          <div style="font-size:13px;font-weight:600;color:var(--primary)">${r}</div>
+          <div style="font-size:12px;color:var(--text3)">${s}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-14">
+    <div class="card-header"><span class="card-title">Recent Transactions</span><button class="btn btn-outline btn-sm" onclick="navigate('transactions')">View All</button></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Invoice</th><th>Cashier</th><th>Items</th><th>Method</th><th>Time</th><th>Amount</th><th>Status</th></tr></thead>
+        <tbody>${TRANSACTIONS.slice(0,5).map(t=>`
+          <tr>
+            <td class="td-primary td-mono">#${t.inv}</td>
+            <td>${t.cashier}</td>
+            <td><span class="pill pill-gray">${t.items} items</span></td>
+            <td>${t.method}</td>
+            <td class="td-mono" style="color:var(--text3)">${t.time}</td>
+            <td class="td-primary">${fmt(t.amount)}</td>
+            <td><span class="pill ${t.status==='Paid'?'pill-green':t.status==='Void'?'pill-red':'pill-amber'}">${t.status}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+  buildRevBars();
+};
+
+function buildRevBars(){
+  const vals=[420,380,510,590,460,640,610,540,680,750,640,720];
+  const labs=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+  const max=Math.max(...vals);
+  const el=$('rev-bars');if(!el)return;
+  el.innerHTML=vals.map((v,i)=>`
+    <div class="bar-wrap">
+      <div class="bar-fill" style="height:${Math.round(v/max*80)}px;background:${i===vals.length-1?'var(--primary)':'var(--primary-border)'}"></div>
+      <div class="bar-label">${labs[i]}</div>
+    </div>`).join('');
+}
+
+// ── OWNER: REVENUE ──
+SCREENS.revenue = function(){
+  $('content').innerHTML=`
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">This Month</div><div class="stat-value" style="color:var(--primary)">₨ 487,200</div><div class="stat-delta delta-up">↑ 12.4%</div></div>
+    <div class="stat-card"><div class="stat-label">Last Month</div><div class="stat-value">₨ 433,600</div><div class="stat-delta delta-flat">Baseline</div></div>
+    <div class="stat-card"><div class="stat-label">YTD Revenue</div><div class="stat-value">₨ 4.2M</div><div class="stat-delta delta-up">↑ 9.8%</div></div>
+    <div class="stat-card"><div class="stat-label">Avg. Daily</div><div class="stat-value">₨ 28,400</div><div class="stat-delta delta-up">↑ 5.2%</div></div>
+  </div>
+  <div class="card mb-14">
+    <div class="card-header"><span class="card-title">Monthly Revenue Breakdown</span><span class="card-sub">Financial Year 2025-2026</span></div>
+    <div class="card-body">
+      <div class="bar-chart" id="rev-bars2" style="height:140px;align-items:flex-end"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Revenue by Category</span></div>
+      <div class="card-body">
+        ${[['Plumbing','₨ 185,136',38,'var(--primary)'],['Electrical','₨ 131,544',27,'var(--green)'],['Hardware','₨ 107,184',22,'var(--amber)'],['Paint & Finish','₨ 63,336',13,'var(--purple)']].map(([n,amt,p,c])=>`
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <span class="dot" style="background:${c}"></span>
+          <span style="flex:1;font-size:13px;color:var(--text)">${n}</span>
+          <span style="font-size:13px;font-weight:600;color:var(--text)">${amt}</span>
+          <span style="font-size:12px;color:var(--text3);min-width:32px;text-align:right">${p}%</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Revenue by Payment Method</span></div>
+      <div class="card-body">
+        ${[['Cash','₨ 214,368',44,'#1E293B'],['Card','₨ 146,160',30,'var(--primary)'],['Transfer','₨ 68,208',14,'var(--green)'],['Credit','₨ 58,464',12,'var(--purple)']].map(([n,amt,p,c])=>`
+        <div class="prog-item">
+          <div class="prog-label">${n}</div>
+          <div class="prog-track"><div class="prog-fill" style="width:${p}%;background:${c}"></div></div>
+          <div class="prog-val">${p}%</div>
+        </div>
+        <div style="font-size:12px;color:var(--text3);margin:-6px 0 10px 110px">${amt}</div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+  setTimeout(()=>{
+    const vals=[320,380,510,590,460,640,610,540,680,750,640,720];
+    const labs=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+    const max=Math.max(...vals);
+    const el=$('rev-bars2');if(!el)return;
+    el.innerHTML=vals.map((v,i)=>`
+      <div class="bar-wrap">
+        <div class="bar-val">${Math.round(v/10)*10}</div>
+        <div class="bar-fill" style="height:${Math.round(v/max*110)}px;background:${i===vals.length-1?'var(--primary)':'#93C5FD'}"></div>
+        <div class="bar-label">${labs[i]}</div>
+      </div>`).join('');
+  },50);
+};
+
+// ── OWNER: ANALYTICS ──
+SCREENS.analytics = function(){
+  $('content').innerHTML=`
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">Avg Transaction</div><div class="stat-value">₨ 2,340</div><div class="stat-delta delta-up">↑ 5.1%</div></div>
+    <div class="stat-card"><div class="stat-label">Daily Transactions</div><div class="stat-value">41</div><div class="stat-delta delta-up">↑ 7.9%</div></div>
+    <div class="stat-card"><div class="stat-label">Return Rate</div><div class="stat-value" style="color:var(--amber)">2.4%</div><div class="stat-delta delta-down">↑ 0.3%</div></div>
+    <div class="stat-card"><div class="stat-label">Stock Turnover</div><div class="stat-value" style="color:var(--green)">6.2x</div><div class="stat-delta delta-up">↑ 0.8x</div></div>
+  </div>
+  <div class="grid-2 mb-14">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Sales by Day of Week</span><span class="card-sub">Last 4 weeks avg</span></div>
+      <div class="card-body">
+        <div class="bar-chart" id="dow-bars" style="height:120px"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Sales by Hour</span><span class="card-sub">Today</span></div>
+      <div class="card-body">
+        <div class="bar-chart" id="hour-bars" style="height:120px"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Best Selling Products</span><span class="card-sub">This month</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Product</th><th>Category</th><th>Units Sold</th><th>Revenue</th><th>Trend</th></tr></thead>
+        <tbody>${[
+          ['PVC Pipe 2"','Plumbing',428,'₨ 192,600','↑'],
+          ['Emulsion 5L','Paint',87,'₨ 278,400','↑'],
+          ['MCB Switch 16A','Electrical',165,'₨ 198,000','↓'],
+          ['Copper Cable 2.5m','Electrical',310,'₨ 254,200','↑'],
+          ['Claw Hammer 500g','Hardware',92,'₨ 81,880','→'],
+        ].map(([n,c,u,r,t],i)=>`
+          <tr>
+            <td style="color:var(--text3);font-weight:600">${i+1}</td>
+            <td class="td-primary">${n}</td>
+            <td><span class="pill pill-blue">${c}</span></td>
+            <td style="font-weight:600">${u}</td>
+            <td class="td-primary">${r}</td>
+            <td style="color:${t==='↑'?'var(--green)':t==='↓'?'var(--red)':'var(--text3)'};font-weight:600">${t}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+  setTimeout(()=>{
+    const dow=[38,52,48,61,74,82,35];const dl=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];const dm=Math.max(...dow);
+    $('dow-bars').innerHTML=dow.map((v,i)=>`<div class="bar-wrap"><div class="bar-fill" style="height:${Math.round(v/dm*90)}px"></div><div class="bar-label">${dl[i]}</div></div>`).join('');
+    const hour=[0,0,12,28,41,38,52,48,61,74,55,42];const hl=['8','9','10','11','12','1','2','3','4','5','6','7'];const hm=Math.max(...hour);
+    $('hour-bars').innerHTML=hour.map((v,i)=>`<div class="bar-wrap"><div class="bar-fill" style="height:${Math.max(v/hm*90,2)}px;background:var(--green)"></div><div class="bar-label">${hl[i]}</div></div>`).join('');
+  },50);
+};
+
+// ── OWNER: USERS ──
+SCREENS.users = function(){
+  let search='',filterRole='all',filterStatus='all';
+  function render(){
+    let users=USERS.filter(u=>{
+      if(filterRole!=='all'&&u.role!==filterRole)return false;
+      if(filterStatus!=='all'&&u.status!==filterStatus)return false;
+      if(search&&!u.name.toLowerCase().includes(search.toLowerCase())&&!u.email.toLowerCase().includes(search.toLowerCase()))return false;
+      return true;
+    });
+    const roleColors={Owner:'var(--primary)',Admin:'var(--green)',Supervisor:'var(--amber)',Cashier:'var(--purple)'};
+    const avColors={Owner:'',Admin:'green',Supervisor:'amber',Cashier:'purple'};
+    $('content').innerHTML=`
+    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-value">${USERS.length}</div></div>
+      <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value" style="color:var(--green)">${USERS.filter(u=>u.status==='Active').length}</div></div>
+      <div class="stat-card"><div class="stat-label">On Leave</div><div class="stat-value" style="color:var(--amber)">${USERS.filter(u=>u.status==='On Leave').length}</div></div>
+      <div class="stat-card"><div class="stat-label">Inactive</div><div class="stat-value" style="color:var(--red)">${USERS.filter(u=>u.status==='Inactive').length}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">All Users</span><span class="card-sub">${users.length} result${users.length!==1?'s':''}</span></div>
+      <div class="card-body" style="padding-bottom:0">
+        <div class="filters">
+          <input class="filter-input" style="width:220px" placeholder="Search by name or email…" value="${search}" oninput="this.getRootNode?.()||0;window._us=this.value;renderUsersTable()">
+          <select class="filter-select" onchange="window._ur=this.value;renderUsersTable()">
+            <option value="all">All Roles</option>
+            ${['Owner','Admin','Supervisor','Cashier'].map(r=>`<option value="${r}" ${filterRole===r?'selected':''}>${r}</option>`).join('')}
+          </select>
+          <select class="filter-select" onchange="window._ust=this.value;renderUsersTable()">
+            <option value="all">All Status</option>
+            ${['Active','On Leave','Inactive'].map(s=>`<option value="${s}" ${filterStatus===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Role</th><th>Email</th><th>Phone</th><th>Status</th><th>Since</th><th>Actions</th></tr></thead>
+          <tbody>${users.length?users.map(u=>`
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px"><div class="user-av-lg" style="width:28px;height:28px;font-size:11px;background:${roleColors[u.role]}">${u.av}</div><span class="td-primary">${u.name}</span></div></td>
+              <td><span class="pill ${u.role==='Owner'?'pill-blue':u.role==='Admin'?'pill-green':u.role==='Supervisor'?'pill-amber':'pill-purple'}">${u.role}</span></td>
+              <td style="color:var(--text2)">${u.email}</td>
+              <td style="color:var(--text2)">${u.phone}</td>
+              <td><span class="pill ${u.status==='Active'?'pill-green':u.status==='Inactive'?'pill-red':'pill-amber'}">${u.status}</span></td>
+              <td class="td-mono" style="color:var(--text3)">${u.since}</td>
+              <td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-sm" onclick="showToast('Editing ${u.name}')">Edit</button><button class="btn btn-outline btn-sm" style="color:var(--red);border-color:var(--red-border)" onclick="showToast('${u.name} deactivated','error')">Deactivate</button></div></td>
+            </tr>`).join(''):`<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text3)">No users found</td></tr>`}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+    // Wire up filters directly
+    const si=$('content').querySelector('input');
+    if(si)si.addEventListener('input',e=>{search=e.target.value;render();});
+    const sels=$('content').querySelectorAll('select');
+    if(sels[0])sels[0].addEventListener('change',e=>{filterRole=e.target.value;render();});
+    if(sels[1])sels[1].addEventListener('change',e=>{filterStatus=e.target.value;render();});
+  }
+  render();
+};
+window.renderUsersTable=()=>{};
+
+// ── OWNER: INVENTORY ──
+SCREENS.inventory = function(){
+  let search='',filterCat='all',filterStatus='all';
+  function render(){
+    let prods=PRODUCTS.filter(p=>{
+      const st=stockStatus(p);
+      if(filterCat!=='all'&&p.cat!==filterCat)return false;
+      if(filterStatus==='low'&&st.label==='In Stock')return false;
+      if(filterStatus==='out'&&p.stock>0)return false;
+      if(search&&!p.name.toLowerCase().includes(search.toLowerCase())&&!p.sku.toLowerCase().includes(search.toLowerCase()))return false;
+      return true;
+    });
+    $('content').innerHTML=`
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Total Products</div><div class="stat-value">${PRODUCTS.length}</div></div>
+      <div class="stat-card"><div class="stat-label">Low Stock</div><div class="stat-value" style="color:var(--amber)">${PRODUCTS.filter(p=>stockStatus(p).label==='Low Stock'||stockStatus(p).label==='Critical').length}</div></div>
+      <div class="stat-card"><div class="stat-label">Out of Stock</div><div class="stat-value" style="color:var(--red)">${PRODUCTS.filter(p=>p.stock===0).length}</div></div>
+      <div class="stat-card"><div class="stat-label">Stock Value</div><div class="stat-value" style="color:var(--green)">₨ 2.1M</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Product Catalogue</span><span class="card-sub">${prods.length} products</span></div>
+      <div class="card-body" style="padding-bottom:0">
+        <div class="filters">
+          <input class="filter-input" style="width:220px" placeholder="Search by name or SKU…" value="${search}">
+          <select class="filter-select">
+            <option value="all">All Categories</option>
+            ${['Plumbing','Electrical','Hardware','Paint'].map(c=>`<option value="${c}" ${filterCat===c?'selected':''}>${c}</option>`).join('')}
+          </select>
+          <select class="filter-select">
+            <option value="all">All Status</option>
+            <option value="low" ${filterStatus==='low'?'selected':''}>Low / Critical</option>
+            <option value="out" ${filterStatus==='out'?'selected':''}>Out of Stock</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>SKU</th><th>Product</th><th>Category</th><th>Stock</th><th>Min.</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>${prods.map(p=>{const st=stockStatus(p);return`
+            <tr>
+              <td class="td-mono" style="color:var(--text3)">${p.sku}</td>
+              <td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">${p.icon}</span><span class="td-primary">${p.name}</span></div></td>
+              <td><span class="pill pill-blue">${p.cat}</span></td>
+              <td style="font-weight:600;color:${p.stock===0?'var(--red)':p.stock<=p.min?'var(--amber)':'var(--text)'}">${p.stock}</td>
+              <td style="color:var(--text3)">${p.min}</td>
+              <td class="td-primary">${fmt(p.price)}</td>
+              <td><span class="pill ${st.pill}">${st.label}</span></td>
+              <td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-sm" onclick="showToast('Editing ${p.name}')">Edit</button><button class="btn btn-outline btn-sm" onclick="showToast('Reorder placed for ${p.name}','success')">Reorder</button></div></td>
+            </tr>`;}).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+    const inputs=$('content').querySelectorAll('input,select');
+    inputs[0]?.addEventListener('input',e=>{search=e.target.value;render();});
+    inputs[1]?.addEventListener('change',e=>{filterCat=e.target.value;render();});
+    inputs[2]?.addEventListener('change',e=>{filterStatus=e.target.value;render();});
+  }
+  render();
+};
+
+// ── OWNER: TRANSACTIONS ──
+SCREENS.transactions = function(){
+  let search='',filterStatus='all',filterMethod='all',filterDate='all';
+  function render(){
+    let txs=TRANSACTIONS.filter(t=>{
+      if(filterStatus!=='all'&&t.status!==filterStatus)return false;
+      if(filterMethod!=='all'&&t.method!==filterMethod)return false;
+      if(filterDate==='today'&&t.date!=='2026-03-19')return false;
+      if(filterDate==='yesterday'&&t.date!=='2026-03-18')return false;
+      if(search&&!t.inv.toLowerCase().includes(search.toLowerCase())&&!t.cashier.toLowerCase().includes(search.toLowerCase()))return false;
+      return true;
+    });
+    const total=txs.filter(t=>t.status==='Paid').reduce((s,t)=>s+t.amount,0);
+    $('content').innerHTML=`
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Showing Transactions</div><div class="stat-value">${txs.length}</div></div>
+      <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value" style="color:var(--primary)">${fmt(total)}</div></div>
+      <div class="stat-card"><div class="stat-label">Paid</div><div class="stat-value" style="color:var(--green)">${txs.filter(t=>t.status==='Paid').length}</div></div>
+      <div class="stat-card"><div class="stat-label">Void / Refund</div><div class="stat-value" style="color:var(--red)">${txs.filter(t=>t.status!=='Paid').length}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Transaction Log</span><span class="card-sub">${txs.length} records</span></div>
+      <div class="card-body" style="padding-bottom:0">
+        <div class="filters">
+          <input class="filter-input" style="width:200px" placeholder="Invoice or cashier…" value="${search}">
+          <select class="filter-select">
+            <option value="all">All Dates</option>
+            <option value="today" ${filterDate==='today'?'selected':''}>Today</option>
+            <option value="yesterday" ${filterDate==='yesterday'?'selected':''}>Yesterday</option>
+          </select>
+          <select class="filter-select">
+            <option value="all">All Status</option>
+            ${['Paid','Void','Refund'].map(s=>`<option value="${s}" ${filterStatus===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+          <select class="filter-select">
+            <option value="all">All Methods</option>
+            ${['Cash','Card','Transfer','Credit'].map(m=>`<option value="${m}" ${filterMethod===m?'selected':''}>${m}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Invoice</th><th>Cashier</th><th>Items</th><th>Method</th><th>Date</th><th>Time</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>${txs.length?txs.map(t=>`
+            <tr>
+              <td class="td-primary td-mono">#${t.inv}</td>
+              <td>${t.cashier}</td>
+              <td><span class="pill pill-gray">${t.items}</span></td>
+              <td>${t.method}</td>
+              <td class="td-mono" style="color:var(--text3)">${t.date}</td>
+              <td class="td-mono" style="color:var(--text3)">${t.time}</td>
+              <td class="td-primary">${fmt(t.amount)}</td>
+              <td><span class="pill ${t.status==='Paid'?'pill-green':t.status==='Void'?'pill-red':'pill-amber'}">${t.status}</span></td>
+            </tr>`).join(''):`<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">No transactions found</td></tr>`}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+    const inputs=$('content').querySelectorAll('input,select');
+    inputs[0]?.addEventListener('input',e=>{search=e.target.value;render();});
+    inputs[1]?.addEventListener('change',e=>{filterDate=e.target.value;render();});
+    inputs[2]?.addEventListener('change',e=>{filterStatus=e.target.value;render();});
+    inputs[3]?.addEventListener('change',e=>{filterMethod=e.target.value;render();});
+  }
+  render();
+};
+
+// ── OWNER: SETTINGS ──
+SCREENS.settings = function(){
+  $('content').innerHTML=`
+  <div class="grid-left-wide">
+    <div>
+      <div class="card mb-14">
+        <div class="card-header"><span class="card-title">Store Information</span></div>
+        <div class="card-body">
+          <div class="form-row"><div class="form-group"><label class="form-label">Store Name</label><input class="form-input" value="HardwareHub Colombo"></div><div class="form-group"><label class="form-label">Registration No.</label><input class="form-input" value="PV 10023882"></div></div>
+          <div class="form-row"><div class="form-group"><label class="form-label">Contact Number</label><input class="form-input" value="+94 11 234 5678"></div><div class="form-group"><label class="form-label">Email</label><input class="form-input" value="contact@hardwarehub.lk"></div></div>
+          <div class="form-group"><label class="form-label">Address</label><textarea class="form-textarea" rows="2">No. 45, Baseline Road, Colombo 09, Sri Lanka</textarea></div>
+          <button class="btn btn-primary" onclick="showToast('Settings saved','success')">Save Changes</button>
+        </div>
+      </div>
+      <div class="card mb-14">
+        <div class="card-header"><span class="card-title">System Preferences</span></div>
+        <div class="card-body">
+          <div class="settings-section">
+            <div class="settings-row"><div><div class="settings-row-label">Low stock alerts</div><div class="settings-row-sub">Notify when stock falls below minimum</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="settings-row"><div><div class="settings-row-label">Require supervisor approval for voids</div><div class="settings-row-sub">Cashiers must request void approval</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="settings-row"><div><div class="settings-row-label">Print receipt automatically</div><div class="settings-row-sub">Auto-print after every sale</div></div><button class="toggle off" onclick="this.classList.toggle('off')"></button></div>
+            <div class="settings-row"><div><div class="settings-row-label">End-of-day summary email</div><div class="settings-row-sub">Send daily sales report to owner</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card mb-14">
+        <div class="card-header"><span class="card-title">Role Permissions</span></div>
+        <div class="card-body">
+          ${[['Owner','Full system access including user management & financial reports'],['Admin','Inventory management only. No access to sales data.'],['Supervisor','Monitor sales, approve voids, view cashier stats.'],['Cashier','Process sales only. Cannot edit inventory or view reports.']].map(([r,d])=>`
+          <div style="padding:10px 0;border-bottom:1px solid var(--border)">
+            <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">${r}</div>
+            <div style="font-size:12px;color:var(--text3)">${d}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Backup & Data</span></div>
+        <div class="card-body">
+          <div style="margin-bottom:12px"><div class="settings-row-label">Last Backup</div><div class="settings-row-sub">Today, 06:00 AM — Automatic</div></div>
+          <button class="btn btn-outline" style="width:100%;margin-bottom:8px" onclick="showToast('Backup started')">Run Manual Backup</button>
+          <button class="btn btn-outline" style="width:100%" onclick="showToast('Exporting data...')">Export All Data (CSV)</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+};
+
+// ── ADMIN: STOCK OVERVIEW ──
+SCREENS.stock = function(){
+  let search='',filterCat='all',filterStatus='all',sortBy='name';
+  function render(){
+    let prods=PRODUCTS.filter(p=>{
+      const st=stockStatus(p);
+      if(filterCat!=='all'&&p.cat!==filterCat)return false;
+      if(filterStatus==='low'&&!(st.label==='Low Stock'||st.label==='Critical'))return false;
+      if(filterStatus==='out'&&p.stock>0)return false;
+      if(filterStatus==='ok'&&st.label!=='In Stock')return false;
+      if(search&&!p.name.toLowerCase().includes(search.toLowerCase())&&!p.sku.toLowerCase().includes(search.toLowerCase()))return false;
+      return true;
+    });
+    if(sortBy==='stock')prods.sort((a,b)=>a.stock-b.stock);
+    else if(sortBy==='price')prods.sort((a,b)=>b.price-a.price);
+    else prods.sort((a,b)=>a.name.localeCompare(b.name));
+    $('content').innerHTML=`
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Total SKUs</div><div class="stat-value">${PRODUCTS.length}</div></div>
+      <div class="stat-card"><div class="stat-label">In Stock</div><div class="stat-value" style="color:var(--green)">${PRODUCTS.filter(p=>stockStatus(p).label==='In Stock').length}</div></div>
+      <div class="stat-card"><div class="stat-label">Low / Critical</div><div class="stat-value" style="color:var(--amber)">${PRODUCTS.filter(p=>stockStatus(p).label!=='In Stock'&&p.stock>0).length}</div></div>
+      <div class="stat-card"><div class="stat-label">Out of Stock</div><div class="stat-value" style="color:var(--red)">${PRODUCTS.filter(p=>p.stock===0).length}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Stock Overview</span><span class="card-sub">${prods.length} products</span></div>
+      <div class="card-body" style="padding-bottom:0">
+        <div class="filters">
+          <input class="filter-input" style="width:220px" placeholder="Search name or SKU…" value="${search}">
+          <select class="filter-select">
+            <option value="all">All Categories</option>
+            ${['Plumbing','Electrical','Hardware','Paint'].map(c=>`<option ${filterCat===c?'selected':''} value="${c}">${c}</option>`).join('')}
+          </select>
+          <select class="filter-select">
+            <option value="all">All Status</option>
+            <option value="ok" ${filterStatus==='ok'?'selected':''}>In Stock</option>
+            <option value="low" ${filterStatus==='low'?'selected':''}>Low / Critical</option>
+            <option value="out" ${filterStatus==='out'?'selected':''}>Out of Stock</option>
+          </select>
+          <select class="filter-select">
+            <option value="name" ${sortBy==='name'?'selected':''}>Sort: Name</option>
+            <option value="stock" ${sortBy==='stock'?'selected':''}>Sort: Stock Qty</option>
+            <option value="price" ${sortBy==='price'?'selected':''}>Sort: Price</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>SKU</th><th>Product</th><th>Category</th><th>Stock</th><th>Min Level</th><th>Unit Price</th><th>Value</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>${prods.map(p=>{const st=stockStatus(p);return`
+            <tr>
+              <td class="td-mono" style="color:var(--text3)">${p.sku}</td>
+              <td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">${p.icon}</span><span class="td-primary">${p.name}</span></div></td>
+              <td><span class="pill pill-blue">${p.cat}</span></td>
+              <td style="font-weight:600;color:${p.stock===0?'var(--red)':p.stock<=p.min?'var(--amber)':'var(--text)'}">${p.stock}</td>
+              <td style="color:var(--text3)">${p.min}</td>
+              <td>${fmt(p.price)}</td>
+              <td class="td-primary">${fmt(p.price*p.stock)}</td>
+              <td><span class="pill ${st.pill}">${st.label}</span></td>
+              <td><div style="display:flex;gap:6px">
+                <button class="btn btn-outline btn-sm" onclick="showToast('Editing ${p.name}')">Edit</button>
+                <button class="btn btn-outline btn-sm" onclick="showToast('Reorder placed','success')">Reorder</button>
+              </div></td>
+            </tr>`;}).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+    const inputs=$('content').querySelectorAll('input,select');
+    inputs[0]?.addEventListener('input',e=>{search=e.target.value;render();});
+    inputs[1]?.addEventListener('change',e=>{filterCat=e.target.value;render();});
+    inputs[2]?.addEventListener('change',e=>{filterStatus=e.target.value;render();});
+    inputs[3]?.addEventListener('change',e=>{sortBy=e.target.value;render();});
+  }
+  render();
+};
+
+// ── ADMIN: ADD PRODUCT ──
+SCREENS.addproduct = function(){
+  $('content').innerHTML=`
+  <div style="max-width:680px">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Add New Product</span><span class="card-sub">Fill in product details</span></div>
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Product Name *</label><input class="form-input" placeholder="e.g. PVC Pipe 2&quot; (1m)"></div>
+          <div class="form-group"><label class="form-label">SKU *</label><input class="form-input" placeholder="e.g. PLM-0099"><div class="form-help">Must be unique</div></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Category *</label><select class="form-select"><option value="">Select category…</option><option>Plumbing</option><option>Electrical</option><option>Hardware</option><option>Paint</option><option>Other</option></select></div>
+          <div class="form-group"><label class="form-label">Unit of Measure</label><select class="form-select"><option>Each</option><option>Metre</option><option>Kilogram</option><option>Litre</option><option>Pack</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Selling Price (LKR) *</label><input class="form-input" type="number" placeholder="0.00"></div>
+          <div class="form-group"><label class="form-label">Cost Price (LKR)</label><input class="form-input" type="number" placeholder="0.00"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Opening Stock *</label><input class="form-input" type="number" placeholder="0"></div>
+          <div class="form-group"><label class="form-label">Minimum Stock Level *</label><input class="form-input" type="number" placeholder="0"><div class="form-help">Alert triggers below this</div></div>
+        </div>
+        <div class="form-group"><label class="form-label">Supplier</label><input class="form-input" placeholder="Supplier name or company"></div>
+        <div class="form-group"><label class="form-label">Description / Notes</label><textarea class="form-textarea" placeholder="Optional product notes…"></textarea></div>
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button class="btn btn-primary" onclick="showToast('Product added successfully','success')">Save Product</button>
+          <button class="btn btn-outline" onclick="showToast('Form cleared')">Clear Form</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+};
+
+// ── ADMIN: ADJUSTMENTS ──
+SCREENS.adjustments = function(){
+  const adj=[
+    {date:'2026-03-19',product:'PVC Pipe 2"',sku:'PLM-0012',type:'Received',qty:'+50',before:92,after:142,by:'Priya N.',note:'Monthly restock'},
+    {date:'2026-03-18',product:'Claw Hammer 500g',sku:'HW-0056',type:'Damaged',qty:'-2',before:37,after:35,by:'Priya N.',note:'Returned damaged'},
+    {date:'2026-03-17',product:'LED Bulb 9W',sku:'ELE-0045',type:'Received',qty:'+30',before:65,after:95,by:'Kasun P.',note:'Supplier delivery'},
+    {date:'2026-03-17',product:'PVC Cement 500ml',sku:'PLM-0041',type:'Count',qty:'-1',before:5,after:4,by:'Priya N.',note:'Physical count correction'},
+    {date:'2026-03-15',product:'Wire Nuts Asst.',sku:'ELE-0088',type:'Damaged',qty:'-3',before:10,after:7,by:'Kasun P.',note:'Packaging damaged'},
+  ];
+  let filterType='all';
+  function render(){
+    const filtered=adj.filter(a=>filterType==='all'||a.type===filterType);
+    $('content').innerHTML=`
+    <div class="grid-right-wide mb-14">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Quick Adjustment</span></div>
+        <div class="card-body">
+          <div class="form-group"><label class="form-label">Product</label><select class="form-select"><option value="">Select product…</option>${PRODUCTS.map(p=>`<option>${p.name} (${p.sku})</option>`).join('')}</select></div>
+          <div class="form-group"><label class="form-label">Adjustment Type</label><select class="form-select"><option>Received (Stock In)</option><option>Damaged</option><option>Physical Count</option><option>Return from Customer</option></select></div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Quantity</label><input class="form-input" type="number" placeholder="0"></div>
+            <div class="form-group"><label class="form-label">Date</label><input class="form-input" type="date" value="2026-03-19"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Notes</label><input class="form-input" placeholder="Reason for adjustment…"></div>
+          <button class="btn btn-primary" onclick="showToast('Adjustment saved','success')">Save Adjustment</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Adjustment History</span></div>
+        <div class="card-body" style="padding-bottom:0">
+          <div class="filters">
+            <select class="filter-select">
+              <option value="all">All Types</option>
+              ${['Received','Damaged','Count'].map(t=>`<option value="${t}" ${filterType===t?'selected':''}>${t}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        ${filtered.map(a=>`
+        <div class="feed-item" style="padding:10px 16px">
+          <span class="dot ${a.type==='Received'?'dot-green':a.type==='Damaged'?'dot-red':'dot-amber'}" style="margin-top:6px"></span>
+          <div class="feed-body">
+            <div class="feed-title">${a.product}</div>
+            <div class="feed-sub">${a.type} · ${a.sku} · ${a.by} · ${a.note}</div>
+            <div class="feed-sub">${a.before} → ${a.after} units</div>
+          </div>
+          <div class="feed-right">
+            <div class="feed-amount" style="color:${a.qty.startsWith('+')?'var(--green)':'var(--red)'}">${a.qty}</div>
+            <div class="feed-time">${a.date}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+    $('content').querySelector('select')?.addEventListener('change',e=>{filterType=e.target.value;render();});
+  }
+  render();
+};
+
+// ── ADMIN: LOW STOCK ──
+SCREENS.lowstock = function(){
+  const low=PRODUCTS.filter(p=>p.stock<=p.min);
+  $('content').innerHTML=`
+  <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card"><div class="stat-label">Items Needing Reorder</div><div class="stat-value" style="color:var(--red)">${low.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Out of Stock</div><div class="stat-value" style="color:var(--red)">${low.filter(p=>p.stock===0).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Critical (Below 50% Min)</div><div class="stat-value" style="color:var(--amber)">${low.filter(p=>p.stock>0&&p.stock<p.min/2).length}</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Low Stock Alerts</span><button class="btn btn-primary btn-sm" onclick="showToast('All reorders placed','success')">Reorder All</button></div>
+    <div class="card-body">
+      ${low.sort((a,b)=>a.stock-b.stock).map(p=>{const st=stockStatus(p);return`
+      <div class="alert-row ${p.stock===0||p.stock<p.min/2?'critical':'warn'}">
+        <div class="alert-icon ${p.stock===0||p.stock<p.min/2?'red':'amber'}">${p.icon}</div>
+        <div class="alert-body">
+          <div class="alert-title">${p.name}</div>
+          <div class="alert-sub">${p.sku} · ${p.cat} · Supplier: General Traders</div>
+          <div style="margin-top:6px">
+            <div class="prog-track" style="width:200px;display:inline-block">
+              <div class="prog-fill" style="width:${Math.round(Math.min(p.stock/p.min,1)*100)}%;background:${p.stock===0?'var(--red)':p.stock<p.min/2?'var(--red)':'var(--amber)'}"></div>
+            </div>
+            <span style="font-size:11px;color:var(--text3);margin-left:8px">${p.stock} / ${p.min} min</span>
+          </div>
+        </div>
+        <div class="alert-actions">
+          <div style="text-align:right;margin-right:8px">
+            <div style="font-size:18px;font-weight:700;color:${p.stock===0?'var(--red)':'var(--amber)'}">${p.stock}</div>
+            <div style="font-size:11px;color:var(--text3)">in stock</div>
+          </div>
+          <span class="pill ${st.pill}">${st.label}</span>
+          <button class="btn btn-primary btn-sm" onclick="showToast('Reorder placed for ${p.name}','success')">Reorder</button>
+        </div>
+      </div>`;}).join('')}
+    </div>
+  </div>`;
+};
+
+// ── ADMIN: STOCK REPORT ──
+SCREENS.stockreport = function(){
+  $('content').innerHTML=`
+  <div class="card mb-14">
+    <div class="card-header"><span class="card-title">Stock Report</span><div style="display:flex;gap:8px"><button class="btn btn-outline btn-sm" onclick="showToast('Generating PDF...')">Export PDF</button><button class="btn btn-outline btn-sm" onclick="showToast('Exporting CSV...')">Export CSV</button></div></div>
+    <div class="card-body">
+      <div class="filters">
+        <select class="filter-select"><option>All Categories</option><option>Plumbing</option><option>Electrical</option><option>Hardware</option><option>Paint</option></select>
+        <input class="filter-input" type="date" value="2026-03-19">
+        <span style="color:var(--text3);font-size:13px">as of date</span>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>SKU</th><th>Product</th><th>Category</th><th>Opening</th><th>Received</th><th>Sold</th><th>Adjusted</th><th>Closing</th><th>Value</th></tr></thead>
+        <tbody>${PRODUCTS.map(p=>`
+          <tr>
+            <td class="td-mono" style="color:var(--text3)">${p.sku}</td>
+            <td class="td-primary">${p.icon} ${p.name}</td>
+            <td><span class="pill pill-blue">${p.cat}</span></td>
+            <td style="color:var(--text3)">${p.stock+Math.floor(Math.random()*20)}</td>
+            <td style="color:var(--green)">+${Math.floor(Math.random()*30)}</td>
+            <td style="color:var(--red)">-${Math.floor(Math.random()*15)}</td>
+            <td style="color:var(--amber)">${Math.random()>0.7?'-'+Math.floor(Math.random()*3):0}</td>
+            <td style="font-weight:600">${p.stock}</td>
+            <td class="td-primary">${fmt(p.price*p.stock)}</td>
+          </tr>`).join('')}
+          <tr style="background:#FAFAFE;font-weight:600">
+            <td colspan="8" style="color:var(--text);padding:12px">Total Stock Value</td>
+            <td style="color:var(--primary);font-weight:700">${fmt(PRODUCTS.reduce((s,p)=>s+p.price*p.stock,0))}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+};
+
+// ── SUPERVISOR: LIVE SALES ──
+SCREENS.livesales = function(){
+  $('content').innerHTML=`
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">Today's Revenue</div><div class="stat-value" style="color:var(--primary)">₨ 32,450</div><div class="stat-delta delta-up">↑ 8.1%</div></div>
+    <div class="stat-card"><div class="stat-label">Transactions</div><div class="stat-value">41</div><div class="stat-delta delta-up">↑ 3 vs yesterday</div></div>
+    <div class="stat-card"><div class="stat-label">Pending Voids</div><div class="stat-value" style="color:var(--red)">2</div><div class="stat-delta delta-down">↓ Awaiting approval</div></div>
+    <div class="stat-card"><div class="stat-label">Active Cashiers</div><div class="stat-value" style="color:var(--green)">3</div><div class="stat-delta delta-flat">of 5 on shift</div></div>
+  </div>
+  <div class="grid-left-wide">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Live Transaction Feed</span><span class="pill pill-red" style="font-size:11px">● LIVE</span></div>
+      <div class="card-body" style="padding:0">
+        ${TRANSACTIONS.slice(0,7).map(t=>`
+        <div class="feed-item" style="padding:12px 16px">
+          <span class="dot ${t.status==='Paid'?'dot-green':t.status==='Void'?'dot-red':'dot-amber'}" style="margin-top:6px"></span>
+          <div class="feed-body">
+            <div class="feed-title">#${t.inv} — ${t.cashier}</div>
+            <div class="feed-sub">${t.items} items · ${t.method}</div>
+          </div>
+          <div class="feed-right">
+            <div class="feed-amount">${fmt(t.amount)}</div>
+            <div class="feed-time">${t.time} · <span class="pill ${t.status==='Paid'?'pill-green':t.status==='Void'?'pill-red':'pill-amber'}" style="font-size:10px">${t.status}</span></div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Cashier Status</span></div>
+      <div class="card-body">
+        ${[{n:'Amali W.',sales:18,rev:14200,status:'Active',av:'AW',cls:'purple'},{n:'Kasun P.',sales:14,rev:11500,status:'Active',av:'KP',cls:'green'},{n:'Nimal R.',sales:9,rev:6750,status:'Break',av:'NR',cls:'amber'},{n:'Tharaka S.',sales:0,rev:0,status:'Off Shift',av:'TS',cls:''},{n:'Chamari B.',sales:0,rev:0,status:'Off Shift',av:'CB',cls:''}].map(c=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div class="user-av-lg" style="width:34px;height:34px;font-size:12px;background:var(--${c.cls||'primary'})">${c.av}</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500;color:var(--text)">${c.n}</div>
+            <div style="font-size:12px;color:var(--text3)">${c.sales} sales · ${fmt(c.rev)}</div>
+          </div>
+          <span class="pill ${c.status==='Active'?'pill-green':c.status==='Break'?'pill-amber':'pill-gray'}">${c.status}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+};
+
+// ── SUPERVISOR: RETURNS & VOIDS ──
+SCREENS.returns = function(){
+  $('content').innerHTML=`
+  <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card"><div class="stat-label">Pending Requests</div><div class="stat-value" style="color:var(--red)">2</div></div>
+    <div class="stat-card"><div class="stat-label">Approved Today</div><div class="stat-value" style="color:var(--green)">1</div></div>
+    <div class="stat-card"><div class="stat-label">Total Voided Value</div><div class="stat-value" style="color:var(--amber)">₨ 2,990</div></div>
+  </div>
+  <div class="card mb-14">
+    <div class="card-header"><span class="card-title">Pending Approval</span><span class="card-sub">Requires supervisor action</span></div>
+    <div class="card-body">
+      ${RETURN_REQS.filter(r=>r.status==='Pending').map(r=>`
+      <div class="alert-row critical" style="margin-bottom:12px">
+        <div class="alert-icon red">↩</div>
+        <div class="alert-body">
+          <div class="alert-title">#${r.inv} — Void / Return Request</div>
+          <div class="alert-sub">Cashier: ${r.cashier} · ${r.time} AM</div>
+          <div style="font-size:13px;color:var(--text);margin-top:4px">${r.reason}</div>
+        </div>
+        <div class="alert-actions" style="flex-direction:column;gap:6px">
+          <div style="font-size:18px;font-weight:700;color:var(--red)">${fmt(r.amount)}</div>
+          <button class="btn btn-success btn-sm" onclick="showToast('Void approved for #${r.inv}','success')">✓ Approve</button>
+          <button class="btn btn-danger btn-sm" onclick="showToast('Void rejected')">✗ Reject</button>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Request History</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Invoice</th><th>Cashier</th><th>Reason</th><th>Amount</th><th>Status</th></tr></thead>
+        <tbody>${RETURN_REQS.map(r=>`
+          <tr>
+            <td class="td-primary td-mono">#${r.inv}</td>
+            <td>${r.cashier}</td>
+            <td style="color:var(--text2)">${r.reason}</td>
+            <td class="td-primary">${fmt(r.amount)}</td>
+            <td><span class="pill ${r.status==='Pending'?'pill-red':r.status==='Approved'?'pill-green':'pill-gray'}">${r.status}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+};
+
+// ── SUPERVISOR: CASHIERS ──
+SCREENS.cashiers = function(){
+  $('content').innerHTML=`
+  <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card"><div class="stat-label">Total Cashiers</div><div class="stat-value">5</div></div>
+    <div class="stat-card"><div class="stat-label">On Shift</div><div class="stat-value" style="color:var(--green)">3</div></div>
+    <div class="stat-card"><div class="stat-label">Combined Sales Today</div><div class="stat-value" style="color:var(--primary)">₨ 32,450</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Cashier Performance — Today</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Cashier</th><th>Status</th><th>Sales Count</th><th>Revenue</th><th>Avg. Transaction</th><th>Voids</th><th>Last Transaction</th></tr></thead>
+        <tbody>${[
+          {av:'AW',n:'Amali Wijeratne',status:'Active',sales:18,rev:14200,voids:0,last:'09:32',cls:'purple'},
+          {av:'KP',n:'Kasun Perera Jr.',status:'Active',sales:14,rev:11500,voids:1,last:'09:18',cls:'green'},
+          {av:'NR',n:'Nimal Rajapaksa',status:'Break',sales:9,rev:6750,voids:1,last:'08:42',cls:'amber'},
+          {av:'TS',n:'Tharaka Silva',status:'Off Shift',sales:0,rev:0,voids:0,last:'—',cls:''},
+          {av:'CB',n:'Chamari Bandara',status:'Off Shift',sales:0,rev:0,voids:0,last:'—',cls:''},
+        ].map(c=>`
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:8px"><div class="user-av-lg" style="width:30px;height:30px;font-size:11px;background:var(--${c.cls||'primary'})">${c.av}</div><span class="td-primary">${c.n}</span></div></td>
+            <td><span class="pill ${c.status==='Active'?'pill-green':c.status==='Break'?'pill-amber':'pill-gray'}">${c.status}</span></td>
+            <td style="font-weight:600">${c.sales}</td>
+            <td class="td-primary">${c.rev?fmt(c.rev):'—'}</td>
+            <td>${c.sales?fmt(Math.round(c.rev/c.sales)):'—'}</td>
+            <td style="color:${c.voids?'var(--red)':'var(--text3)'}">${c.voids}</td>
+            <td class="td-mono" style="color:var(--text3)">${c.last}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+};
+
+// ── SUPERVISOR: SUMMARY ──
+SCREENS.summary = function(){
+  $('content').innerHTML=`
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value" style="color:var(--primary)">₨ 32,450</div><div class="stat-delta delta-up">↑ 8.1% vs yesterday</div></div>
+    <div class="stat-card"><div class="stat-label">Transactions</div><div class="stat-value">41</div><div class="stat-delta delta-up">↑ 3</div></div>
+    <div class="stat-card"><div class="stat-label">Items Sold</div><div class="stat-value">187</div><div class="stat-delta delta-up">↑ 12</div></div>
+    <div class="stat-card"><div class="stat-label">Void / Returns</div><div class="stat-value" style="color:var(--red)">2</div><div class="stat-delta delta-flat">Same as yesterday</div></div>
+  </div>
+  <div class="grid-2 mb-14">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Sales by Hour</span><span class="card-sub">Today</span></div>
+      <div class="card-body"><div class="bar-chart" id="today-bars" style="height:100px"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Payment Method Split</span></div>
+      <div class="card-body">
+        ${[['Cash','₨ 15,722',48],['Card','₨ 8,763',27],['Transfer','₨ 4,220',13],['Credit','₨ 3,745',12]].map(([m,a,p])=>`
+        <div class="prog-item" style="margin-bottom:12px">
+          <div class="prog-label">${m}</div>
+          <div class="prog-track"><div class="prog-fill" style="width:${p}%"></div></div>
+          <div class="prog-val">${p}%</div>
+        </div>
+        <div style="font-size:12px;color:var(--text3);margin:-8px 0 10px 110px">${a}</div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Cashier Breakdown</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Cashier</th><th>Transactions</th><th>Revenue</th><th>Share</th><th>Avg. Sale</th></tr></thead>
+        <tbody>${[['Amali W.',18,14200],['Kasun P.',14,11500],['Nimal R.',9,6750]].map(([n,s,r])=>`
+          <tr>
+            <td class="td-primary">${n}</td>
+            <td>${s}</td>
+            <td class="td-primary">${fmt(r)}</td>
+            <td><div style="display:flex;align-items:center;gap:8px"><div class="prog-track" style="width:80px"><div class="prog-fill" style="width:${Math.round(r/32450*100)}%"></div></div><span style="font-size:12px;color:var(--text3)">${Math.round(r/32450*100)}%</span></div></td>
+            <td>${fmt(Math.round(r/s))}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+  setTimeout(()=>{
+    const h=[0,0,8,22,34,41,38,52,48,61,0,0];const hl=['8','9','10','11','12','1','2','3','4','5','6','7'];const hm=Math.max(...h);
+    $('today-bars').innerHTML=h.map((v,i)=>`<div class="bar-wrap"><div class="bar-fill" style="height:${Math.max(v/hm*80,2)}px"></div><div class="bar-label">${hl[i]}</div></div>`).join('');
+  },50);
+};
+
+// ── SUPERVISOR: ALERTS ──
+SCREENS.alerts = function(){
+  $('content').innerHTML=`
+  <div class="card">
+    <div class="card-header"><span class="card-title">Active Alerts</span><button class="btn btn-outline btn-sm" onclick="showToast('All alerts cleared')">Clear All</button></div>
+    <div class="card-body">
+      ${[
+        {sev:'critical',icon:'🔴',title:'PVC Cement 500ml — Out of stock imminent',sub:'Only 4 units remain · Minimum is 20 · Last reorder was 2 months ago',time:'09:00',action:'Reorder'},
+        {sev:'critical',icon:'🔴',title:'Sandpaper 120G — Out of Stock',sub:'0 units in stock · Customer demand high this week',time:'08:45',action:'Reorder'},
+        {sev:'warn',icon:'🟡',title:'2 void requests pending supervisor approval',sub:'INV-0838 and INV-0829 need your review',time:'08:42',action:'Review'},
+        {sev:'warn',icon:'🟡',title:'Wire Nuts Asst. — Low Stock',sub:'7 units remaining · Minimum is 25',time:'07:30',action:'Reorder'},
+        {sev:'warn',icon:'🟡',title:'Hacksaw Blades — Low Stock',sub:'9 units remaining · Minimum is 30',time:'07:00',action:'Reorder'},
+        {sev:'info',icon:'🔵',title:'Nimal R. is currently on break',sub:'Shift started at 07:00 · Break started 08:30',time:'08:30',action:'View'},
+      ].map(a=>`
+      <div class="alert-row ${a.sev==='critical'?'critical':a.sev==='warn'?'warn':''} mb-14" style="margin-bottom:8px">
+        <div class="alert-icon ${a.sev==='critical'?'red':a.sev==='warn'?'amber':''}">${a.icon}</div>
+        <div class="alert-body">
+          <div class="alert-title">${a.title}</div>
+          <div class="alert-sub">${a.sub}</div>
+        </div>
+        <div class="alert-actions">
+          <span style="font-size:11px;color:var(--text3)">${a.time}</span>
+          <button class="btn btn-outline btn-sm" onclick="showToast('${a.action} action taken')">${a.action}</button>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+};
+
+// ── CASHIER: POS ──
+SCREENS.pos = function(){
+  let search='',filterCat='all';
+  function getFiltered(){
+    return PRODUCTS.filter(p=>{
+      if(filterCat!=='all'&&p.cat!==filterCat)return false;
+      if(search&&!p.name.toLowerCase().includes(search.toLowerCase())&&!p.sku.toLowerCase().includes(search.toLowerCase()))return false;
+      return true;
+    });
+  }
+  function cartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
+  function changeQty(idx,delta){
+    cart[idx].qty+=delta;
+    if(cart[idx].qty<=0)cart.splice(idx,1);
+    renderPOS();
+  }
+  function renderPOS(){
+    const filtered=getFiltered();
+    const subtotal=cartTotal();
+    const discount=0;
+    const total=subtotal-discount;
+    $('content').innerHTML=`
+    <div class="pos-layout">
+      <div class="pos-left">
+        <div class="filters" style="margin-bottom:12px">
+          <input class="filter-input" style="flex:1" placeholder="Search by product name or SKU…" value="${search}">
+          <select class="filter-select">
+            <option value="all">All Categories</option>
+            ${['Plumbing','Electrical','Hardware','Paint'].map(c=>`<option value="${c}" ${filterCat===c?'selected':''}>${c}</option>`).join('')}
+          </select>
+          <span style="font-size:12px;color:var(--text3)">${filtered.length} products</span>
+        </div>
+        <div class="products-grid">
+          ${filtered.map(p=>`
+          <div class="prod-card ${p.stock===0?'out-of-stock':''}" onclick="posAdd(${p.id})">
+            <span class="prod-icon">${p.icon}</span>
+            <div class="prod-name">${p.name}</div>
+            <div class="prod-price">${fmt(p.price)}</div>
+            <div class="prod-stock">${p.stock===0?'Out of stock':p.stock+' in stock'}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div class="cart-panel">
+        <div class="cart-header">
+          <span style="font-size:14px;font-weight:600;color:var(--text)">Current Sale</span>
+          <span class="pill pill-blue">${cart.length} item${cart.length!==1?'s':''}</span>
+        </div>
+        <div class="cart-items-wrap">
+          ${cart.length===0?`<div class="empty" style="padding:32px 20px"><div class="empty-icon">🛒</div><div class="empty-title">Cart is empty</div><p style="font-size:12px;color:var(--text3);margin-top:4px">Click a product to add</p></div>`:
+            cart.map((item,i)=>`
+            <div class="cart-item-row">
+              <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-sub">${fmt(item.price)} each</div>
+              </div>
+              <div class="qty-ctrl">
+                <button class="qty-btn" onclick="posQty(${i},-1)">−</button>
+                <span class="qty-val">${item.qty}</span>
+                <button class="qty-btn" onclick="posQty(${i},1)">+</button>
+              </div>
+              <div class="item-total">${fmt(item.price*item.qty)}</div>
+              <button class="remove-btn" onclick="posQty(${i},-${item.qty})">×</button>
+            </div>`).join('')}
+        </div>
+        <div class="cart-footer">
+          <div class="total-row"><span class="total-label">Subtotal</span><span class="total-val">${fmt(subtotal)}</span></div>
+          <div class="total-row"><span class="total-label">Discount</span><span class="total-val" style="color:var(--green)">— ₨ 0</span></div>
+          <div class="grand-total-row"><span class="grand-label">Total</span><span class="grand-val">${fmt(total)}</span></div>
+          <select style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);margin-bottom:8px;background:var(--white)">
+            <option>💵 Cash</option><option>💳 Card</option><option>📱 Bank Transfer</option><option>📋 Credit</option>
+          </select>
+          <button class="checkout-btn" ${cart.length===0?'disabled':''} onclick="posCheckout()">Complete Sale — ${fmt(total)}</button>
+          <button class="clear-btn" onclick="posClear()">Clear Cart</button>
+        </div>
+      </div>
+    </div>`;
+    // re-wire filters
+    const inp=$('content').querySelector('input');
+    const sel=$('content').querySelector('select');
+    inp?.addEventListener('input',e=>{search=e.target.value;renderPOS();});
+    sel?.addEventListener('change',e=>{filterCat=e.target.value;renderPOS();});
+  }
+  window.posAdd=function(id){
+    const p=PRODUCTS.find(x=>x.id===id);if(!p||p.stock===0)return;
+    const ex=cart.find(x=>x.id===id);
+    if(ex)ex.qty++;else cart.push({id:p.id,name:p.name,price:p.price,qty:1});
+    renderPOS();
+  };
+  window.posQty=function(i,d){
+    cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);renderPOS();
+  };
+  window.posClear=function(){cart=[];renderPOS();};
+  window.posCheckout=function(){
+    if(!cart.length)return;
+    showToast('Sale completed! '+fmt(cartTotal()),'success');
+    cart=[];renderPOS();
+  };
+  renderPOS();
+};
+
+// ── CASHIER: MY TRANSACTIONS ──
+SCREENS.mytransactions = function(){
+  const myTx=TRANSACTIONS.filter(t=>t.cashier==='Amali W.');
+  let filterStatus='all',filterDate='all';
+  function render(){
+    let txs=myTx.filter(t=>{
+      if(filterStatus!=='all'&&t.status!==filterStatus)return false;
+      if(filterDate==='today'&&t.date!=='2026-03-19')return false;
+      return true;
+    });
+    const total=txs.filter(t=>t.status==='Paid').reduce((s,t)=>s+t.amount,0);
+    $('content').innerHTML=`
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat-card"><div class="stat-label">My Sales Today</div><div class="stat-value" style="color:var(--primary)">₨ 14,200</div></div>
+      <div class="stat-card"><div class="stat-label">Transactions Today</div><div class="stat-value">18</div></div>
+      <div class="stat-card"><div class="stat-label">Filtered Total</div><div class="stat-value" style="color:var(--green)">${fmt(total)}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">My Transactions</span><span class="card-sub">${txs.length} records</span></div>
+      <div class="card-body" style="padding-bottom:0">
+        <div class="filters">
+          <select class="filter-select">
+            <option value="all">All Dates</option>
+            <option value="today" ${filterDate==='today'?'selected':''}>Today Only</option>
+          </select>
+          <select class="filter-select">
+            <option value="all">All Status</option>
+            ${['Paid','Void','Refund'].map(s=>`<option value="${s}" ${filterStatus===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Invoice</th><th>Items</th><th>Method</th><th>Date</th><th>Time</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>${txs.map(t=>`
+            <tr>
+              <td class="td-primary td-mono">#${t.inv}</td>
+              <td>${t.items}</td>
+              <td>${t.method}</td>
+              <td class="td-mono" style="color:var(--text3)">${t.date}</td>
+              <td class="td-mono" style="color:var(--text3)">${t.time}</td>
+              <td class="td-primary">${fmt(t.amount)}</td>
+              <td><span class="pill ${t.status==='Paid'?'pill-green':t.status==='Void'?'pill-red':'pill-amber'}">${t.status}</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+    const sels=$('content').querySelectorAll('select');
+    sels[0]?.addEventListener('change',e=>{filterDate=e.target.value;render();});
+    sels[1]?.addEventListener('change',e=>{filterStatus=e.target.value;render();});
+  }
+  render();
+};
+
+// ── CASHIER: RETURN REQUEST ──
+SCREENS.returnrequest = function(){
+  $('content').innerHTML=`
+  <div style="max-width:600px">
+    <div class="card mb-14">
+      <div class="card-header"><span class="card-title">Submit Return / Void Request</span><span class="card-sub">Requires supervisor approval</span></div>
+      <div class="card-body">
+        <div class="form-group"><label class="form-label">Invoice Number *</label><input class="form-input" placeholder="e.g. INV-0840"></div>
+        <div class="form-group"><label class="form-label">Request Type *</label><select class="form-select"><option value="">Select type…</option><option>Customer Return</option><option>Void (Duplicate)</option><option>Void (Entry Error)</option><option>Defective Item</option></select></div>
+        <div class="form-group"><label class="form-label">Items to Return</label><textarea class="form-textarea" placeholder="List the items being returned and quantities…"></textarea></div>
+        <div class="form-group"><label class="form-label">Reason *</label><textarea class="form-textarea" placeholder="Describe the reason for return or void…"></textarea></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-primary" onclick="showToast('Request submitted — awaiting supervisor approval','success')">Submit Request</button>
+          <button class="btn btn-outline" onclick="showToast('Form cleared')">Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">My Request History</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Invoice</th><th>Type</th><th>Amount</th><th>Submitted</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="td-primary td-mono">#INV-0829</td><td>Void (Duplicate)</td><td>${fmt(450)}</td><td>Today 07:30</td><td><span class="pill pill-red">Pending</span></td></tr>
+            <tr><td class="td-primary td-mono">#INV-0801</td><td>Customer Return</td><td>${fmt(890)}</td><td>Mar 18, 16:20</td><td><span class="pill pill-green">Approved</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>`;
+};
+
+// ─── INIT ───────────────────────────────────────────────────────────────
+buildNav();
+buildModal();
+navigate('overview');
+
+$('primary-action').addEventListener('click',()=>{
+  if(currentPage==='pos'||currentPage==='overview')posCheckout&&posCheckout();
+  else showToast('Action triggered');
+});
+</script>
+</body>
+</html>
